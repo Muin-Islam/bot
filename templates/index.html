@@ -3,116 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>berserk</title>
+    <title>Berserk</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
+            min-height: 100vh;
+            background: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=1471&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            backdrop-filter: blur(10px);
+            color: #fff;
         }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 5, 20, 0.7);
+            z-index: -1;
+        }
+        
         .chat-container {
-            width: 400px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 420px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
         .chat-header {
-            background: #0078d7;
+            background: linear-gradient(135deg, rgba(100, 0, 0, 0.7), rgba(50, 0, 0, 0.9));
             color: white;
-            padding: 10px;
+            padding: 15px;
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
         .chat-messages {
-            height: 300px;
-            padding: 10px;
+            height: 400px;
+            padding: 15px;
             overflow-y: auto;
-            border-bottom: 1px solid #ddd;
+            background: rgba(20, 10, 30, 0.4);
         }
+        
+        /* Custom scrollbar */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(200, 0, 0, 0.5);
+            border-radius: 3px;
+        }
+        
         .chat-input {
             display: flex;
-            padding: 10px;
+            padding: 15px;
+            background: rgba(30, 15, 40, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
         .chat-input input {
             flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
             margin-right: 10px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
         }
+        
+        .chat-input input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .chat-input input:focus {
+            outline: none;
+            border-color: rgba(200, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
         .chat-input button {
-            padding: 10px 20px;
-            background: #0078d7;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, rgba(200, 0, 0, 0.8), rgba(150, 0, 0, 0.9));
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(200, 0, 0, 0.3);
         }
+        
         .chat-input button:hover {
-            background: #005bb5;
+            background: linear-gradient(135deg, rgba(220, 0, 0, 0.9), rgba(170, 0, 0, 1));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 0, 0, 0.4);
         }
+        
         .message {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            max-width: 70%;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .message.user {
+            background: linear-gradient(135deg, rgba(100, 0, 0, 0.5), rgba(70, 0, 0, 0.7));
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
             text-align: right;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
+        
         .message.bot {
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.5), rgba(20, 20, 40, 0.7));
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
             text-align: left;
+            box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .message::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: inherit;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
     <div class="chat-container">
-        <div class="chat-header">Grifith</div>
-        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-header">GRIFFITH</div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">I am Griffith. What is it you desire?</div>
+        </div>
         <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <button onclick="sendMessage()">Send</button>
+            <input type="text" id="user-input" placeholder="Speak your will..." autocomplete="off">
+            <button onclick="sendMessage()">SEND</button>
         </div>
     </div>
 
     <script>
         function sendMessage() {
-            const userInput = document.getElementById('user-input').value;
-            if (userInput.trim() === '') return;
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            if (message === '') return;
 
             // Display user message
             const chatMessages = document.getElementById('chat-messages');
             const userMessage = document.createElement('div');
             userMessage.className = 'message user';
-            userMessage.textContent = `You: ${userInput}`;
+            userMessage.textContent = message;
             chatMessages.appendChild(userMessage);
 
             // Clear input
-            document.getElementById('user-input').value = '';
+            userInput.value = '';
 
-            // Send message to server
-            fetch('/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message: userInput }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display bot response
-                const botMessage = document.createElement('div');
-                botMessage.className = 'message bot';
-                botMessage.textContent = `Bot: ${data.response}`;
-                chatMessages.appendChild(botMessage);
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
 
-                // Scroll to bottom
+            // Simulate bot typing
+            setTimeout(() => {
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'message bot';
+                typingIndicator.textContent = '...';
+                chatMessages.appendChild(typingIndicator);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-            });
+
+                // Remove typing indicator and show response after delay
+                setTimeout(() => {
+                    chatMessages.removeChild(typingIndicator);
+                    
+                    // Generate bot response (simulated)
+                    const responses = [
+                        "You dare speak to me so casually?",
+                        "My dream is all that matters.",
+                        "Sacrifice is necessary for greatness.",
+                        "Do you understand what it means to have a dream?",
+                        "I will have my own kingdom.",
+                        "Guts... why...?"
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'message bot';
+                    botMessage.textContent = randomResponse;
+                    chatMessages.appendChild(botMessage);
+                    
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000 + Math.random() * 2000);
+            }, 500);
         }
+
+        // Allow sending message with Enter key
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>
